@@ -1,4 +1,8 @@
-<app-record-detail
-  *ngFor="let rec of records"
+<h2 class="is-size-1 has-text-centered">Record Collection</h2>
+<div class="columns is-centered is-multiline">
+  <app-record-detail
+  *ngFor="let rec of records; let i = index"
   [record]="rec"
+  [index]="i"
 ></app-record-detail>
+</div>

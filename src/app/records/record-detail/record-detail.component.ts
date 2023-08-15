@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Record } from 'src/app/shared/record.model';
+import { RecordsService } from '../records.service';
 
 @Component({
   selector: 'app-record-detail',
@@ -8,4 +9,13 @@ import { Record } from 'src/app/shared/record.model';
 })
 export class RecordDetailComponent {
   @Input() record: Record;
+  @Input() index: number;
+
+  constructor(private recordsService: RecordsService) { }
+
+  onDelete(i) {
+    this.recordsService.deleteRecord(i);
+  }
 }
+
+
