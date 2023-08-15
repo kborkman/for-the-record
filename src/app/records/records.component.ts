@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { Record } from '../shared/record.model';
-import { RecordsService } from './records.service';
+import { RecordsService } from '../shared/records.service';
 
 @Component({
   selector: 'app-records',

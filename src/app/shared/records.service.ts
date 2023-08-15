@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Record } from '../shared/record.model';
+import { Record } from './record.model';
 import { Subject } from 'rxjs';
 
 @Injectable({

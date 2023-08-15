@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Record } from 'src/app/shared/record.model';
-import { RecordsService } from '../records.service';
+import { RecordsService } from '../../shared/records.service';
 
 @Component({
   selector: 'app-record-detail',
