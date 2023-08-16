@@ -9,36 +9,56 @@
       <button class="delete" aria-label="close" (click)="modalToggle()"></button>
     </header>
     <section class="modal-card-body">
-      <form>
+      <form [formGroup]="recordForm" (ngSubmit)="onSubmit()">
         <div class="field">
           <label class="label">Artist Name</label>
           <div class="control">
-            <input class="input" type="text" placeholder="e.g. Bob Dylan">
+            <input
+              id="artist"
+              formControlName="artist"
+              class="input"
+              type="text"
+              placeholder="e.g. Bob Dylan">
           </div>
         </div>
 
         <div class="field">
           <label class="label">Album Name</label>
           <div class="control">
-            <input class="input" type="text" placeholder="e.g. Blood on the Tracks">
+            <input
+              id="album"
+              formControlName="album"
+              class="input"
+              type="text"
+              placeholder="e.g. Blood on the Tracks">
           </div>
         </div>
 
         <div class="field">
           <label class="label">Year</label>
           <div class="control">
-            <input class="input" type="text" placeholder="e.g. 1975">
+            <input
+              id="year"
+              formControlName="year"
+              class="input"
+              type="text"
+              placeholder="e.g. 1975">
           </div>
         </div>
 
         <div class="field">
           <label class="label">Image Path</label>
           <div class="control">
-            <input class="input" type="text" placeholder="e.g. https://c8.alamy.com/zooms/9/84e87b254796438bb235a83663c72654/2dmyg33.jpg">
-          </div>
+            <input
+              id="imagePath"
+              formControlName="imagePath"
+              class="input"
+              type="text"
+              placeholder="e.g. https://c8.alamy.com/zooms/9/84e87b254796438bb235a83663c72654/2dmyg33.jpg">
+            </div>
         </div>
 
-        <button class="button is-primary mt-2">Add Record</button>
+        <button class="button is-primary mt-2" type="submit"  [disabled]="!recordForm.valid">Add Record</button>
       </form>
     </section>
     <!-- <footer class="modal-card-foot">

@@ -29,39 +29,29 @@ export class RecordsService {
       '2005'
     ),
     new Record(
-      'Bruce Springsteen',
-      'Born to Run',
-      'https://upload.wikimedia.org/wikipedia/en/thumb/7/7a/Born_to_Run_%28Front_Cover%29.jpg/220px-Born_to_Run_%28Front_Cover%29.jpg',
-      '1975'
+      'Titus Andronicus',
+      'The Monitor',
+      'https://upload.wikimedia.org/wikipedia/en/6/68/Titus_andronicus_The_Monitor_album_cover.jpg',
+      '2010'
     ),
     new Record(
-      'Bob Dylan',
-      'Blonde on Blonde',
-      'https://theband.hiof.no/band_pictures/blonde_on_blonde.jpg',
-      '1966'
+      'Modest Mouse',
+      'The Moon and Antarctica',
+      'https://upload.wikimedia.org/wikipedia/en/0/00/TheMoonAntarctica.jpg',
+      '2000'
     ),
     new Record(
-      'The National',
-      'Alligator',
-      'https://upload.wikimedia.org/wikipedia/en/thumb/d/d2/TheNationalAlligator.gif/220px-TheNationalAlligator.gif',
-      '2005'
+      'Kendrick Lamar',
+      'To Pimp a Butterfly',
+      'https://i.guim.co.uk/img/static/sys-images/Guardian/Pix/pictures/2015/3/11/1426099817173/f1efb3f4-9a6d-4f78-8ca8-594ab646d198-bestSizeAvailable.jpeg?width=465&dpr=1&s=none',
+      '2015'
     )
   ];
 
   constructor() { }
 
-  addRecord(
-    artist,
-    album,
-    year,
-    imagePath
-  ) {
-    this.records.push(
-      artist,
-      album,
-      year,
-      imagePath
-    );
+  addRecord(record: Record) {
+    this.records.push(record);
     this.recordsChanged.next(this.records.slice());
   }
 
