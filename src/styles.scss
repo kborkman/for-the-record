@@ -1,6 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @import '/node_modules/bulma/bulma.sass';
 
+.add-to-collection {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+}
+
 .card-image {
   min-width: 240px;
 }

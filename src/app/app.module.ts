@@ -8,6 +8,7 @@ import { RecordDetailComponent } from './records/record-detail/record-detail.com
 import { RecordsService } from './shared/records.service';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { AddToCollectionComponent } from './add-to-collection/add-to-collection.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { FooterComponent } from './footer/footer.component';
     RecordsComponent,
     RecordDetailComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    AddToCollectionComponent
   ],
   imports: [
     BrowserModule,
