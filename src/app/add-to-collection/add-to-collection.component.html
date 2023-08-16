@@ -5,17 +5,47 @@
   <div class="modal-content">
    <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">Modal title</p>
+      <p class="modal-card-title">Add a Record to Your Collection</p>
       <button class="delete" aria-label="close" (click)="modalToggle()"></button>
     </header>
     <section class="modal-card-body">
-      <!-- Content ... -->
+      <form>
+        <div class="field">
+          <label class="label">Artist Name</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="e.g. Bob Dylan">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Album Name</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="e.g. Blood on the Tracks">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Year</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="e.g. 1975">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Image Path</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="e.g. https://c8.alamy.com/zooms/9/84e87b254796438bb235a83663c72654/2dmyg33.jpg">
+          </div>
+        </div>
+
+        <button class="button is-primary mt-2">Add Record</button>
+      </form>
     </section>
-    <footer class="modal-card-foot">
+    <!-- <footer class="modal-card-foot">
       <button class="button is-success">Save changes</button>
       <button class="button" (click)="modalToggle()">Cancel</button>
     </footer>
-  </div>
+  </div> -->
   </div>
   <button class="modal-close is-large" aria-label="close"></button>
 </div>

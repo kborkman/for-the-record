@@ -50,6 +50,21 @@ export class RecordsService {
 
   constructor() { }
 
+  addRecord(
+    artist,
+    album,
+    year,
+    imagePath
+  ) {
+    this.records.push(
+      artist,
+      album,
+      year,
+      imagePath
+    );
+    this.recordsChanged.next(this.records.slice());
+  }
+
   getRecords() {
     return this.records.slice();
   }

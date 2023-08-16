@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { RecordsService } from '../shared/records.service';
+import { Record } from '../shared/record.model';
 
 @Component({
   selector: 'app-add-to-collection',
@@ -7,9 +9,14 @@ import { Component } from '@angular/core';
 })
 export class AddToCollectionComponent {
   addToggle: boolean = false;
+  record: Record;
+
+  constructor(private recordService: RecordsService) {
+
+  }
 
   modalToggle() {
-    const modalBackground = document.querySelectorAll('.modal-background');
+    const modalBackground = document.querySelectorAll('.modal-background, .modal-close');
     this.addToggle = !this.addToggle;
     if (this.addToggle) {
       modalBackground.forEach((close) => {
@@ -23,4 +30,7 @@ export class AddToCollectionComponent {
     }
   }
 
+  addRecordSubmit() {
+    // this.record = this.recordService.addRecord();
+  }
 }
