@@ -7,6 +7,18 @@
   right: 25px;
 }
 
+.card {
+  @include tablet {
+    max-width: 240px;
+  }
+}
+
+.card-content {
+  min-height: 150px;
+}
+
 .card-image {
-  min-width: 240px;
+  @include tablet {
+    width: 240px;
+  }
 }
