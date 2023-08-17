@@ -1,10 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+import { RecordsComponent } from './records/records.component';
+import { RecordDetailComponent } from './records/record-detail/record-detail.component';
+
+const routes: Routes = [
+  { path: '', component: RecordsComponent },
+  { path: 'records', component: RecordsComponent },
+  { path: 'records/:album', component: RecordDetailComponent }
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
