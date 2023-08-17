@@ -6,8 +6,8 @@ import { RecordDetailComponent } from './records/record-detail/record-detail.com
 
 const routes: Routes = [
   { path: '', component: RecordsComponent },
-  { path: 'records', component: RecordsComponent },
-  { path: 'records/:album', component: RecordDetailComponent }
+  { path: 'records', component: RecordsComponent, children: [] },
+  { path: 'records/:id', component: RecordDetailComponent }
 ];
 
 @NgModule({

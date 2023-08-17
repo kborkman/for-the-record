@@ -1,23 +1,2 @@
-<div class="column">
-  <div class="card">
-    <div class="card-image">
-      <figure class="image is-square">
-        <a href="#"><img src="{{ record.imagePath }}" alt="{{ record.artist }} - {{ record.album}}"></a>
-      </figure>
-    </div>
-    <div class="card-content">
-      <div class="media-content">
-        <p class="title is-4">{{ record.album}}</p>
-        <p class="subtitle is-6">{{ record.artist}}</p>
-      </div>
-      <div class="content">
-        {{ record.year }}
-      </div>
-    </div>
-    <footer class="card-footer">
-      <a href="#" class="card-footer-item">Edit</a>
-      <a href="#" class="card-footer-item" (click)="onDelete(index)">Delete</a>
-    </footer>
-  </div>
-</div>
+{{ record.album }}
 
