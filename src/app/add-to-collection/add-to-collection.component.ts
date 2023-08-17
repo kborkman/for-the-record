@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { RecordsService } from '../shared/records.service';
 import { Record } from '../shared/record.model';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-to-collection',
