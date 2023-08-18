@@ -11,6 +11,40 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class RecordDetailComponent {
   record: any;
   id: number;
+  tracks: any = [
+    {
+      'name': 'Thunder Road',
+      'length': '6:02'
+    },
+    {
+      'name': 'Tenth Avenue Freeze-Out',
+      'length': '3:03'
+    },
+    {
+      'name': 'Night',
+      'length': '3:01'
+    },
+    {
+      'name': 'Backstreets',
+      'length': '6:30'
+    },
+    {
+      'name': 'Born to Run',
+      'length': '4:29'
+    },
+    {
+      'name': 'Shes the One',
+      'length': '6:44'
+    },
+    {
+      'name': 'Meeting Across the River',
+      'length': '3:19'
+    },
+    {
+      'name': 'Jungleland',
+      'length': '9:59'
+    }
+  ]
 
   constructor(private recordsService: RecordsService, private route: ActivatedRoute) { }
 

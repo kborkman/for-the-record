@@ -1,2 +1,79 @@
-{{ record.album }}
 
+
+
+<div class="block">
+  <article class="media">
+    <figure class="media-left">
+      <p class="image is-128x128">
+        <img class="is-rounded" src="{{ record.imagePath }}">
+      </p>
+    </figure>
+    <div class="media-content">
+      <div class="content">
+        <p>
+          <strong>{{ record.album }}</strong>
+          <br>
+          {{ record.artist }}
+        </p>
+      </div>
+      <nav class="level is-mobile">
+        <div class="level-left">
+          <a class="level-item">
+            <span class="is-small">Genre Tag</span>
+          </a>
+          <a class="level-item">
+            <span class="is-small">Genre Tag</span>
+          </a>
+          <a class="level-item">
+            <span class="is-small">Genre Tag</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </article>
+</div>
+
+<div class="block">
+  <nav class="level is-mobile">
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Release Year</p>
+        <p class="title">{{ record.year }}</p>
+      </div>
+    </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Tracks</p>
+        <p class="title">10</p>
+      </div>
+    </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Followers</p>
+        <p class="title">456K</p>
+      </div>
+    </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Likes</p>
+        <p class="title">789</p>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<div class="block">
+  <article class="message is-dark">
+    <div class="message-header">
+      <p>Track Listing</p>
+      <button class="delete" aria-label="delete"></button>
+    </div>
+    <div class="message-body">
+      <div class="content">
+    <ol type="1">
+      <li *ngFor="let track of tracks">{{track.name}} <span class="is-pulled-right">{{ track.length }}</span></li>
+    </ol>
+  </div>
+    </div>
+  </article>
+</div>
