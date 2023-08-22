@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { Record } from '../shared/record.model';
 import { RecordsService } from '../shared/records.service';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Record } from '../shared/record.model';
+
 
 @Component({
-  selector: 'app-records',
-  templateUrl: './records.component.html',
-  styleUrls: ['./records.component.scss']
+  selector: 'app-artists',
+  templateUrl: './artists.component.html',
+  styleUrls: ['./artists.component.scss']
 })
-export class RecordsComponent {
+export class ArtistsComponent {
   records: Record[];
   subscription: Subscription;
 
@@ -33,7 +34,4 @@ export class RecordsComponent {
   onDelete(i) {
     this.recordsService.deleteRecord(i);
   }
-
-
-
 }

@@ -1,5 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+// Colors
+$primary: #52E0FF;
+$secondary: #FD6199;
+
+// Fonts
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+
+$family-secondary: 'Playfair Display', serif;
+$family-primary: 'Lato', sans-serif;
+
+//variables
+
+
 @import '/node_modules/bulma/bulma.sass';
+
 
 .add-to-collection {
   position: fixed;
