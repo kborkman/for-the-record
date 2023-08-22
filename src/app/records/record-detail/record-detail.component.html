@@ -1,36 +1,65 @@
+<section class="hero">
+  <img class="is-16by9" src="../../../assets/bruce-hero.jpg" alt="">
+</section>
 
+<section class="section">
+  <div class="container">
+    <div class="block details-wrap">
+      <article class="media">
+        <figure class="media-left">
+          <p class="image is-square">
+            <img src="{{ record.imagePath }}">
+          </p>
+        </figure>
+        <div class="media-content">
+          <div class="content">
+              <h2 class="title is-4 mb-0">{{ record.album }}</h2>
+              <h3 class="title is-5 mt-0">{{ record.artist }}</h3>
+          </div>
 
+          <div class="details-wrap">
+            <div class="top-level is-gray">
+              <span class="details-tag">{{ record.year }}</span>
+              <span class="details-tag">41:50</span>
+            </div>
 
-<div class="block">
-  <article class="media">
-    <figure class="media-left">
-      <p class="image is-128x128">
-        <img class="is-rounded" src="{{ record.imagePath }}">
-      </p>
-    </figure>
-    <div class="media-content">
-      <div class="content">
-          <h2 class="title is-3 mb-2">{{ record.album }}</h2>
-          <p class="title is-4">{{ record.artist }}</p>
-      </div>
-      <nav class="level is-mobile">
-        <div class="level-left">
-          <a class="level-item">
-            <span class="is-small">Genre Tag</span>
-          </a>
-          <a class="level-item">
-            <span class="is-small">Genre Tag</span>
-          </a>
-          <a class="level-item">
-            <span class="is-small">Genre Tag</span>
-          </a>
-        </div>
-      </nav>
+            <div class="mid-level detail-tags">
+              <span class="details-tag">glam rock</span>
+              <span class="details-tag">classic rock</span>
+              <span class="details-tag">art rock</span>
+            </div>
+
+            <div class="bottom-level">
+              <span class="has-text-white added-to">added to collection</span>
+            </div>
+          </div>
+
+          </div>
+      </article>
     </div>
-  </article>
+  </div>
+</section>
+
+<section class="hero bg-color-full is-secondary">
+  <div class="container track-listing">
+    <div class="block content">
+      <h2 class="title has-text-black has-text-centered mb-0 is-uppercase">Track Listing</h2>
+      <ol type="1">
+        <li *ngFor="let track of tracks">{{ track.name }} <span class="is-pulled-right">{{ track.length }}</span></li>
+      </ol>
+    </div>
+    <div class="footer-image is-flex is-justify-content-center">
+      <img src="../../../assets/vinyl.png" alt="" class="image is-32x32">
+    </div>
+  </div>
+</section>
+<div class="section section">
+  <div class="container">
+    <h2 class="title is-uppercase has-text-white is-4">More Albums by <br>{{ record.artist }}</h2>
+  </div>
 </div>
 
-<div class="block">
+<!-- <div class="block">
   <nav class="level is-mobile">
     <div class="level-item has-text-centered">
       <div>
@@ -57,19 +86,4 @@
       </div>
     </div>
   </nav>
-</div>
-
-<div class="block">
-  <article class="message is-dark">
-    <div class="message-header">
-      <p>Track Listing</p>
-    </div>
-    <div class="message-body">
-      <div class="content">
-    <ol type="1">
-      <li *ngFor="let track of tracks">{{track.name}} <span class="is-pulled-right">{{ track.length }}</span></li>
-    </ol>
-  </div>
-    </div>
-  </article>
-</div>
+</div> -->
