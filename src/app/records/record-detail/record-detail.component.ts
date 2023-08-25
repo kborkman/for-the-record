@@ -19,6 +19,11 @@ export class RecordDetailComponent {
   faCheck = faCheck;
   artistId: string;
   artistsAlbums: any;
+  artist: any;
+  trackTotal: number = 0;
+  hours: number;
+  minutes: number;
+  seconds: number;
   httpOptions = {
     method: 'POST',
     headers: {
@@ -27,40 +32,6 @@ export class RecordDetailComponent {
     body: `grant_type=client_credentials&client_id=${this.clientId}&client_secret=${this.clientSecret}`
   }
   albumDetails: any;
-  tracks: any = [
-    {
-      'name': 'Thunder Road',
-      'length': '6:02'
-    },
-    {
-      'name': 'Tenth Avenue Freeze-Out',
-      'length': '3:03'
-    },
-    {
-      'name': 'Night',
-      'length': '3:01'
-    },
-    {
-      'name': 'Backstreets',
-      'length': '6:30'
-    },
-    {
-      'name': 'Born to Run',
-      'length': '4:29'
-    },
-    {
-      'name': 'Shes the One',
-      'length': '6:44'
-    },
-    {
-      'name': 'Meeting Across the River',
-      'length': '3:19'
-    },
-    {
-      'name': 'Jungleland',
-      'length': '9:59'
-    }
-  ]
 
   constructor(private recordsService: RecordsService, private route: ActivatedRoute) { }
 
@@ -102,7 +73,7 @@ export class RecordDetailComponent {
         console.log(this.accessToken);
         this.artistId = data.artists[0].id;
         this.getArtistAlbums(this.artistId, this.accessToken);
-        console.log(this.albumDetails);
+        this.getArtist(this.artistId, this.accessToken);
         return this.albumDetails = data;
       });
   }
@@ -117,8 +88,34 @@ export class RecordDetailComponent {
       .then(result => result.json())
       .then(data => {
         console.log(data);
+        this.addTrackTime();
         return this.artistsAlbums = data;
       });
+  }
+
+  getArtist(id: string, token: string) {
+    fetch('https://api.spotify.com/v1/artists/' + id, {
+      method: 'GET',
+      headers: {
+        'Authorization': token
+      }
+    })
+      .then(result => result.json())
+      .then(data => {
+        console.log(data);
+        return this.artist = data;
+      });
+  }
+
+  addTrackTime() {
+    this.trackTotal = this.albumDetails.tracks.items.reduce((acc, track) => acc + track.duration_ms, 0);
+    // this.trackMinutesSeconds = new Date(this.trackTotal);
+    // console.log(this.trackMinutesSeconds.getHours());
+    // console.log(this.trackMinutesSeconds.getMinutes());
+    // console.log(this.trackMinutesSeconds.getSeconds());
+    this.hours = Math.floor(this.trackTotal / (1000 * 60 * 60));
+    this.minutes = Math.floor((this.trackTotal % (1000 * 60 * 60)) / (1000 * 60));
+    this.seconds = Math.floor((this.trackTotal % (1000 * 60)) / 1000);
   }
 }
 

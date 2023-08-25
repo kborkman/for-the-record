@@ -1,5 +1,7 @@
-<section class="hero">
-  <img class="is-16by9" src="../../../assets/bruce-hero.jpg" alt="">
+<section class="hero is-small">
+  <div class="hero-image">
+    <img class="is-2by1" src="{{ artist.images[0].url }}" alt="artist.name">
+  </div>
 </section>
 
 <section class="section">
@@ -20,13 +22,12 @@
           <div class="details-wrap">
             <div class="top-level is-gray">
               <span class="details-tag">{{ albumDetails.release_date | slice:0:4 }}</span>
-              <span class="details-tag">41:50</span>
+              <span *ngIf=" trackTotal >= 3600000" class="details-tag">{{ hours }}:{{ minutes }}:{{ seconds }}</span>
+              <span *ngIf="trackTotal < 3600000" class="details-tag">{{ minutes }}:{{ seconds }}</span>
             </div>
 
             <div class="mid-level detail-tags">
-              <span class="details-tag">glam rock</span>
-              <span class="details-tag">classic rock</span>
-              <span class="details-tag">art rock</span>
+              <span *ngFor="let tag of artist.genres| slice:0:3; let i = index" class="details-tag">{{ tag }}</span>
             </div>
 
             <div class="bottom-level">
