@@ -24,6 +24,9 @@ export class RecordDetailComponent {
   hours: number;
   minutes: number;
   seconds: number;
+  albumsLimit: number = 16;
+  albumsOffset: number = 0;
+  seeMoreAlbumsCounter: number = 0;
   httpOptions = {
     method: 'POST',
     headers: {
@@ -32,8 +35,9 @@ export class RecordDetailComponent {
     body: `grant_type=client_credentials&client_id=${this.clientId}&client_secret=${this.clientSecret}`
   }
   albumDetails: any;
+  noMoreAlbums: boolean = false;
 
-  constructor(private recordsService: RecordsService, private route: ActivatedRoute) { }
+  constructor(private recordsService: RecordsService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.getRecordId();
@@ -70,7 +74,6 @@ export class RecordDetailComponent {
     })
       .then(result => result.json())
       .then(data => {
-        console.log(this.accessToken);
         this.artistId = data.artists[0].id;
         this.getArtistAlbums(this.artistId, this.accessToken);
         this.getArtist(this.artistId, this.accessToken);
@@ -79,7 +82,7 @@ export class RecordDetailComponent {
   }
 
   getArtistAlbums(id: string, token: string) {
-    fetch('https://api.spotify.com/v1/artists/' + id + '/albums', {
+    fetch('https://api.spotify.com/v1/artists/' + id + '/albums?include_groups=album&offset=' + this.albumsOffset + '&limit=' + this.albumsLimit + '&locale=en-US,en;q=0.9', {
       method: 'GET',
       headers: {
         'Authorization': token
@@ -87,9 +90,12 @@ export class RecordDetailComponent {
     })
       .then(result => result.json())
       .then(data => {
-        console.log(data);
+        this.artistsAlbums = data.items.filter((album) => {
+          return album.name != this.albumDetails.name;
+        });
+        console.log(this.artistsAlbums);
         this.addTrackTime();
-        return this.artistsAlbums = data;
+        return this.artistsAlbums;
       });
   }
 
@@ -112,6 +118,27 @@ export class RecordDetailComponent {
     this.hours = Math.floor(this.trackTotal / (1000 * 60 * 60));
     this.minutes = Math.floor((this.trackTotal % (1000 * 60 * 60)) / (1000 * 60));
     this.seconds = Math.floor((this.trackTotal % (1000 * 60)) / 1000);
+  }
+
+  redirectTo(uri: string, id: string) {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+      this.router.navigate([uri, id]));
+  }
+
+  navigateToAlbum(id: string) {
+    this.redirectTo('/records', id);
+  }
+
+  seeMoreAlbums() {
+    this.albumsOffset += this.albumsLimit;
+    this.seeMoreAlbumsCounter++;
+    this.getArtistAlbums(this.artistId, this.accessToken);
+  }
+
+  resetAlbums() {
+    this.albumsOffset = 0;
+    this.getArtistAlbums(this.artistId, this.accessToken);
+    this.seeMoreAlbumsCounter = 0;
   }
 }
 
