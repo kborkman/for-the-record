@@ -30,6 +30,14 @@ $section-padding: 1.5rem;
   }
 }
 
+body {
+  background: $body-background-color;
+}
+
+p {
+  font-family: $family-secondary;
+}
+
 .title {
   font-weight: 400;
 }
@@ -49,6 +57,22 @@ $section-padding: 1.5rem;
 
   p, ol, ul, li {
     font-family: $family-secondary;
+  }
+}
+
+.search-paired {
+  input {
+    border-radius: 4px 0 0 4px;
+  }
+
+  button {
+    border-radius: 0 4px 4px 0;
+  }
+}
+
+.results-grid {
+  .column {
+    line-height: .7;
   }
 }
 
