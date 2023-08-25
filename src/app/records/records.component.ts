@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { Record } from '../shared/record.model';
@@ -13,6 +13,8 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 export class RecordsComponent {
   records: Record[];
   subscription: Subscription;
+  @Input() searchResults: any;
+  @Input() index: number;
 
   constructor(
     private recordsService: RecordsService,
@@ -30,7 +32,7 @@ export class RecordsComponent {
     this.records = this.recordsService.getRecords();
   }
 
-  onDelete(i) {
+  onDelete(i: number) {
     this.recordsService.deleteRecord(i);
   }
 
