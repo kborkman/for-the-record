@@ -109,10 +109,6 @@ export class RecordDetailComponent {
 
   addTrackTime() {
     this.trackTotal = this.albumDetails.tracks.items.reduce((acc, track) => acc + track.duration_ms, 0);
-    // this.trackMinutesSeconds = new Date(this.trackTotal);
-    // console.log(this.trackMinutesSeconds.getHours());
-    // console.log(this.trackMinutesSeconds.getMinutes());
-    // console.log(this.trackMinutesSeconds.getSeconds());
     this.hours = Math.floor(this.trackTotal / (1000 * 60 * 60));
     this.minutes = Math.floor((this.trackTotal % (1000 * 60 * 60)) / (1000 * 60));
     this.seconds = Math.floor((this.trackTotal % (1000 * 60)) / 1000);
