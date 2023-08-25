@@ -70,6 +70,11 @@ p {
   }
 }
 
+.hero-image {
+  max-height: 260px;
+  overflow: hidden;
+}
+
 .results-grid {
   .column {
     line-height: .7;
