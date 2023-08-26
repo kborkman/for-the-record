@@ -63,10 +63,16 @@
   <div class="container">
     <h2 class="title is-uppercase has-text-white is-4">More Albums by <br>{{ albumDetails.artists[0].name }}</h2>
     <div class="columns is-mobile is-multiline is-gapless results-grid">
-      <div *ngFor="let album of artistsAlbums.items" class="column is-one-quarter">
-        <img src="{{ album.images[0].url }}" alt="{{ album.name }}">
+      <div *ngFor="let album of artistsAlbums" class="column is-one-quarter">
+        <img
+          (click)="navigateToAlbum(album.id)"
+          src="{{ album.images[0].url }}"
+          alt="{{ album.name }}"
+          >
       </div>
     </div>
+      <button class="button is-primary mr-3" (click)="seeMoreAlbums()" [disabled]="artistsAlbums.length < 15 ">See More</button>
+      <button class="button is-primary is-outlined" (click)="resetAlbums()" *ngIf="artistsAlbums.length < 15 && seeMoreAlbumsCounter > 0">Reset</button>
   </div>
 </div>
 
