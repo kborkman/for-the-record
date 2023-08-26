@@ -1,6 +1,14 @@
 <section class="hero is-small">
   <div class="hero-image">
     <img class="is-2by1" src="{{ artist.images[0].url }}" alt="artist.name">
+    <!-- <img *ngIf="!isImgLoaded" src="../../../assets/bruce-hero.jpg" >
+    <img
+      [hidden]="!isImgLoaded"
+      [src]="artist.images[0].url"
+      class="is-2by1"
+      (load)="isImgLoaded = true"
+      alt="artist.name"
+    > -->
   </div>
 </section>
 

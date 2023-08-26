@@ -22,11 +22,12 @@ export class RecordDetailComponent {
   artist: any;
   trackTotal: number = 0;
   hours: number;
-  minutes: number;
-  seconds: number;
+  minutes: any;
+  seconds: any;
   albumsLimit: number = 16;
   albumsOffset: number = 0;
   seeMoreAlbumsCounter: number = 0;
+  isImgLoaded: boolean = false;
   httpOptions = {
     method: 'POST',
     headers: {
@@ -42,8 +43,6 @@ export class RecordDetailComponent {
   ngOnInit() {
     this.getRecordId();
     this.tokenCreate();
-    // this.getRecordSpotify(this.id);
-    // this.getArtistAlbums(this.artistId, this.accessToken);
   }
 
   getRecordId() {
@@ -77,6 +76,7 @@ export class RecordDetailComponent {
         this.artistId = data.artists[0].id;
         this.getArtistAlbums(this.artistId, this.accessToken);
         this.getArtist(this.artistId, this.accessToken);
+        this.isImgLoaded = true;
         return this.albumDetails = data;
       });
   }
@@ -114,10 +114,16 @@ export class RecordDetailComponent {
   }
 
   addTrackTime() {
-    this.trackTotal = this.albumDetails.tracks.items.reduce((acc, track) => acc + track.duration_ms, 0);
+    this.trackTotal = this.albumDetails.tracks.items.reduce((acc: number, track: any) => acc + track.duration_ms, 0);
     this.hours = Math.floor(this.trackTotal / (1000 * 60 * 60));
     this.minutes = Math.floor((this.trackTotal % (1000 * 60 * 60)) / (1000 * 60));
+    if (this.minutes < 10) {
+      this.minutes = this.minutes.toString().padStart(2, '0');
+    }
     this.seconds = Math.floor((this.trackTotal % (1000 * 60)) / 1000);
+    if (this.seconds < 10) {
+      this.seconds = this.seconds.toString().padStart(2, '0');
+    }
   }
 
   redirectTo(uri: string, id: string) {
