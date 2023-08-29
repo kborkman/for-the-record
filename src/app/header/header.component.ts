@@ -15,9 +15,11 @@ export class HeaderComponent {
   clientId: string = '98a85a2d677c4f67bd41a54b92bb98a5';
   clientSecret: string = '091159f6fec54d8db2fc858f49991140';
   accessToken: string;
-  albumSearch: FormGroup;
+  selectedCategorySearch: FormGroup;
   searchResults: any;
   faMagnifying = faMagnifyingGlass;
+  category: string = 'album';
+  redirectPath: string;
 
   httpOptions = {
     method: 'POST',
@@ -47,7 +49,7 @@ export class HeaderComponent {
 
   searchAlbums() {
     this.tokenCreate();
-    fetch('https://api.spotify.com/v1/search?q=' + this.albumSearch.value.album + '&type=album&album&limit=9', {
+    fetch('https://api.spotify.com/v1/search?q=' + this.selectedCategorySearch.value.selectedCategory + '&type=' + this.category, {
       method: 'GET',
       headers: {
         'Authorization': this.accessToken
@@ -55,20 +57,29 @@ export class HeaderComponent {
     })
       .then(result => result.json())
       .then(data => {
-        console.log(data.albums.items);
-        return this.searchResults = data.albums.items;
+        if (this.category === 'album') {
+          this.redirectPath = 'records';
+          return this.searchResults = data.albums.items;
+        } else if (this.category === 'artist') {
+          console.log(data.artists);
+          this.redirectPath = 'artists';
+          return this.searchResults = data.artists.items;
+        }
+        // console.log(data);
+        // return this.searchResults = data.albums.items;
       });
   }
 
   onSubmit() {
     this.searchAlbums();
+    this.selectedCategorySearch.reset();
   }
 
   private initForm() {
-    let album = '';
+    let selectedCategory = '';
 
-    this.albumSearch = new FormGroup({
-      'album': new FormControl(album, Validators.required)
+    this.selectedCategorySearch = new FormGroup({
+      'selectedCategory': new FormControl(selectedCategory, Validators.required)
     });
   }
 
@@ -78,10 +89,28 @@ export class HeaderComponent {
   }
 
   navigateToAlbum(id: string) {
-    this.redirectTo('/records', id);
+    console.log(this.redirectPath);
+    this.redirectTo(this.redirectPath, id);
     this.addToggle = !this.addToggle;
     this.searchResults = [];
     console.log(this.searchResults);
+  }
+
+  onCategorySelect(e) {
+    const children = Array.from(e.target.parentNode.children);
+    const target = e.target;
+    this.category = target.innerText.toLowerCase();
+
+    children.forEach(button => {
+      if (button instanceof HTMLElement) {
+        const classList = button.classList;
+        classList.remove('is-active');
+        target.classList.add('is-active');
+      }
+      // button.classList.contains('is-active').remove('is-active');
+    });
+    console.log(this.category);
+    return this.category;
   }
 
   searchModalToggle() {

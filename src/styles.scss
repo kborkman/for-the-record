@@ -30,6 +30,13 @@ $section-padding: 1.5rem;
   }
 }
 
+.button {
+  &.is-dark.is-active {
+    color: $dark;
+  }
+}
+
+
 body {
   background: $body-background-color;
 }
@@ -140,6 +147,14 @@ p {
 
   &:last-child::after {
     content: none;
+  }
+}
+
+.track-listing p {
+  display: flex;
+
+  span {
+    margin-right: 4px;
   }
 }
 

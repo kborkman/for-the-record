@@ -1,21 +1,14 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import { ApiService } from 'src/app/shared/api.service';
+import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-
-@Component({
-  selector: 'app-record-detail',
-  templateUrl: './record-detail.component.html',
-  styleUrls: ['./record-detail.component.scss']
+@Injectable({
+  providedIn: 'root'
 })
-export class RecordDetailComponent {
-  record: any;
+export class ApiService {
   id: string;
   accessToken: string;
   clientId: string = '98a85a2d677c4f67bd41a54b92bb98a5';
   clientSecret: string = '091159f6fec54d8db2fc858f49991140';
-  faCheck = faCheck;
   artistId: string;
   artistsAlbums: any;
   artist: any;
@@ -35,42 +28,26 @@ export class RecordDetailComponent {
     body: `grant_type=client_credentials&client_id=${this.clientId}&client_secret=${this.clientSecret}`
   }
   albumDetails: any;
-  noMoreAlbums: boolean = false;
-  apiAlbums: any;
 
-  constructor(
-    private apiService: ApiService,
-    private route: ActivatedRoute,
-    private router: Router) { }
-
-  ngOnInit() {
-    this.getRecordId();
-    this.tokenCreate();
-  }
+  constructor(public route: ActivatedRoute) { }
 
   getRecordId() {
     this.id = this.route.snapshot.paramMap.get('id');
+    console.log(this.id);
   }
 
-  // getRecord(id: string) {
-  //   this.record = this.recordsService.getRecord(id);
-  // }
-
-  tokenCreate() {
+  tokenCreate(id: string) {
     fetch('https://accounts.spotify.com/api/token', this.httpOptions)
       .then(result => result.json())
-      .then(data => {
-        this.accessToken = data.access_token;
-        this.getToken();
-      });
+      .then(data => this.getToken(data.access_token, id));
   }
 
-  getToken() {
-    this.accessToken = 'Bearer ' + this.accessToken;
-    this.getRecordSpotify(this.id, this.accessToken);
+  getToken(data: string, id: string) {
+    this.accessToken = 'Bearer ' + data;
+    this.getRecordSpotify(id);
   }
 
-  getRecordSpotify(id: string, token: string) {
+  getRecordSpotify(id: string) {
     fetch('https://api.spotify.com/v1/albums/' + id, {
       method: 'GET',
       headers: {
@@ -80,9 +57,10 @@ export class RecordDetailComponent {
       .then(result => result.json())
       .then(data => {
         this.artistId = data.artists[0].id;
+        console.log(this.artistId);
         this.getArtistAlbums(this.artistId, this.accessToken);
         this.getArtist(this.artistId, this.accessToken);
-        this.isImgLoaded = true;
+        // this.isImgLoaded = true;
         return this.albumDetails = data;
       });
   }
@@ -96,11 +74,11 @@ export class RecordDetailComponent {
     })
       .then(result => result.json())
       .then(data => {
-        this.artistsAlbums = data.items.filter((album) => {
-          return album.name != this.albumDetails.name;
-        });
+        this.artistsAlbums = data.items;
         console.log(this.artistsAlbums);
-        this.addTrackTime();
+        if (this.albumDetails.tracks.items.trackTotal) {
+          this.addTrackTime();
+        }
         return this.artistsAlbums;
       });
   }
@@ -131,27 +109,4 @@ export class RecordDetailComponent {
       this.seconds = this.seconds.toString().padStart(2, '0');
     }
   }
-
-  redirectTo(uri: string, id: string) {
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate([uri, id]));
-  }
-
-  navigateToAlbum(id: string) {
-    this.redirectTo('/records', id);
-  }
-
-  seeMoreAlbums() {
-    this.albumsOffset += this.albumsLimit;
-    this.seeMoreAlbumsCounter++;
-    this.getArtistAlbums(this.artistId, this.accessToken);
-  }
-
-  resetAlbums() {
-    this.albumsOffset = 0;
-    this.getArtistAlbums(this.artistId, this.accessToken);
-    this.seeMoreAlbumsCounter = 0;
-  }
 }
-
-

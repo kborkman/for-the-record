@@ -79,28 +79,28 @@
    <div class="modal-card">
     <header class="modal-card-head">
       <section class="section search-wrap">
-        <form [formGroup]="albumSearch" (ngSubmit)="onSubmit()" class="columns is-mobile is-gapless search-paired">
+        <form [formGroup]="selectedCategorySearch" (ngSubmit)="onSubmit()" class="columns is-mobile is-gapless search-paired">
           <div class="field column is-four-fifths">
             <div class="control has-icons-left">
               <input
-                id="album"
-                formControlName="album"
+                id="selectedCategory"
+                formControlName="selectedCategory"
                 class="input"
                 type="text"
-                placeholder="Search Album">
+                placeholder="Search for Album, Artist, or Year">
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faMagnifying"></fa-icon>
                 </span>
             </div>
           </div>
           <div class="column is-one-fifth">
-            <button class="button is-primary" type="submit"  [disabled]="!albumSearch.valid">Search</button>
+            <button class="button is-primary" type="submit"  [disabled]="!selectedCategorySearch.valid">Search</button>
           </div>
         </form>
         <div class="search-options-wrap">
-          <button class="button is-primary is-active">Albums</button>
-          <button class="button is-dark second">Artists</button>
-          <button class="button is-dark">Year</button>
+          <button class="button is-dark is-active" (click)="onCategorySelect($event)">Album</button>
+          <button class="button is-dark second" (click)="onCategorySelect($event)">Artist</button>
+          <button class="button is-dark" (click)="onCategorySelect($event)">Year</button>
         </div>
     </section>
     </header>
