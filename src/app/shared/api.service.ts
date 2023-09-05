@@ -62,13 +62,12 @@ export class ApiService {
         'Authorization': this.accessToken
       }
     });
-    let json = await response.json();
+    return await response.json();
     // this.artistId = json.artists[0].id;
     // console.log(this.artistId);
     // this.getArtistAlbums(this.artistId, this.accessToken);
     // this.getArtist(this.artistId, this.accessToken);
     // this.isImgLoaded = true;
-    return this.albumDetails = json;
   }
 
 
@@ -80,14 +79,7 @@ export class ApiService {
         'Authorization': token
       }
     });
-    let json = await response.json();
-    this.artistsAlbums = json.items;
-    console.log(this.artistsAlbums);
-    // let tracks = this.albumDetails.tracks.items.trackTotal;
-    // if (tracks !== undefined) {
-    //   this.addTrackTime();
-    // }
-    return this.artistsAlbums;
+    return await response.json();
   }
 
   async getArtist(id: string, token: string) {
@@ -97,8 +89,6 @@ export class ApiService {
         'Authorization': token
       }
     });
-    let json = await response.json();
-    console.log(json);
-    return this.artist = json;
+    return await response.json();
   }
 }

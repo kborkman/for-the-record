@@ -94,10 +94,13 @@ export class RecordDetailComponent {
   async findArtistAlbums(offset, limit) {
     try {
       const results = await this.apiService.getArtistAlbums(this.artistId, this.accessToken, offset, limit);
-      console.log(results);
+      // console.log(results);
 
       if (results !== undefined && results !== null) {
-        this.artistsAlbums = results;
+        this.artistsAlbums = results.items.filter((album) => {
+          return album.name != this.albumDetails.name;
+        });
+        console.log(this.artistsAlbums);
       }
     } catch (err) {
       console.log(err);
