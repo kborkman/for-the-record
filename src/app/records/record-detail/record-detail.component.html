@@ -1,6 +1,11 @@
 <section class="hero is-small">
   <div class="hero-image">
-    <img class="is-2by1" src="{{ artist.images[0].url }}" alt="artist.name">
+    <img
+      *ngIf="isImgLoaded"
+      class="is-2by1"
+      src="{{ artist.images[0].url }}"
+      alt="artist.name"
+    />
     <!-- <img *ngIf="!isImgLoaded" src="../../../assets/bruce-hero.jpg" >
     <img
       [hidden]="!isImgLoaded"
@@ -18,32 +23,43 @@
       <article class="media">
         <figure class="media-left">
           <p class="image is-square">
-            <img src="{{ albumDetails.images[1].url }}">
+            <img src="{{ albumDetails.images[1].url }}" />
           </p>
         </figure>
         <div class="media-content">
           <div class="content">
-              <h2 class="title is-4 mb-0">{{ albumDetails.name }}</h2>
-              <h3 class="title is-5 mt-0">{{ albumDetails.artists[0].name }}</h3>
+            <h2 class="title is-4 mb-0">{{ albumDetails.name }}</h2>
+            <h3 class="title is-5 mt-0">{{ albumDetails.artists[0].name }}</h3>
           </div>
 
           <div class="details-wrap">
             <div class="top-level is-gray">
-              <span class="details-tag">{{ albumDetails.release_date | slice:0:4 }}</span>
-              <span *ngIf=" trackTotal >= 3600000" class="details-tag">{{ hours }}:{{ minutes }}:{{ seconds }}</span>
-              <span *ngIf="trackTotal < 3600000" class="details-tag">{{ minutes }}:{{ seconds }}</span>
+              <span class="details-tag">{{
+                albumDetails.release_date | slice : 0 : 4
+              }}</span>
+              <span *ngIf="trackTotal >= 3600000" class="details-tag"
+                >{{ hours }}:{{ minutes }}:{{ seconds }}</span
+              >
+              <span *ngIf="trackTotal < 3600000" class="details-tag"
+                >{{ minutes }}:{{ seconds }}</span
+              >
             </div>
 
-            <div class="mid-level detail-tags">
-              <span *ngFor="let tag of artist.genres| slice:0:3; let i = index" class="details-tag">{{ tag }}</span>
+            <div class="mid-level detail-tags" *ngIf="artist.genres.length > 0">
+              <span
+                *ngFor="let tag of artist.genres | slice : 0 : 3; let i = index"
+                class="details-tag"
+                >{{ tag }}</span
+              >
             </div>
 
             <div class="bottom-level">
-              <span class="has-text-white added-to"><fa-icon [icon]="faCheck"></fa-icon> added to collection</span>
+              <span class="has-text-white added-to"
+                ><fa-icon [icon]="faCheck"></fa-icon> added to collection</span
+              >
             </div>
           </div>
-
-          </div>
+        </div>
       </article>
     </div>
   </div>
@@ -51,36 +67,59 @@
 
 <section class="hero bg-color-full is-secondary">
   <div class="container">
-    <h2 class="title has-text-black has-text-centered mb-0 is-uppercase">Track Listing</h2>
+    <h2 class="title has-text-black has-text-centered mb-0 is-uppercase">
+      Track Listing
+    </h2>
     <div class="track-listing py-5">
-      <div *ngFor="let track of albumDetails.tracks.items; let i = index" class="columns is-mobile">
+      <div
+        *ngFor="let track of albumDetails.tracks.items; let i = index"
+        class="columns is-mobile"
+      >
         <div class="column is-four-fifths p-0">
-          <p><span>{{ i+1 }}. </span>{{ track.name }}</p>
+          <p>
+            <span>{{ i + 1 }}. </span>{{ track.name }}
+          </p>
         </div>
         <div class="column is-one-fifth p-0">
-          <p class="is-justify-content-flex-end"><span>{{ track.duration_ms | date: 'm:ss' }}</span></p>
+          <p class="is-justify-content-flex-end">
+            <span>{{ track.duration_ms | date : "m:ss" }}</span>
+          </p>
         </div>
       </div>
     </div>
     <div class="footer-image is-flex is-justify-content-center">
-      <img src="../../../assets/vinyl.png" alt="" class="image is-32x32">
+      <img src="../../../assets/vinyl.png" alt="" class="image is-32x32" />
     </div>
   </div>
 </section>
 <div class="section">
   <div class="container">
-    <h2 class="title is-uppercase has-text-white is-4">More Albums by <br>{{ albumDetails.artists[0].name }}</h2>
+    <h2 class="title is-uppercase has-text-white is-4">
+      More Albums by <br />{{ albumDetails.artists[0].name }}
+    </h2>
     <div class="columns is-mobile is-multiline is-gapless results-grid">
       <div *ngFor="let album of artistsAlbums" class="column is-one-quarter">
         <img
           (click)="navigateToAlbum(album.id)"
           src="{{ album.images[0].url }}"
           alt="{{ album.name }}"
-          >
+        />
       </div>
     </div>
-      <button class="button is-primary mr-3" (click)="seeMoreAlbums()" [disabled]="artistsAlbums.length < albumsLimit - 1">See More</button>
-      <button class="button is-primary is-outlined" (click)="resetAlbums()" *ngIf="artistsAlbums.length < albumsLimit - 1 && seeMoreAlbumsCounter > 0">Reset</button>
+    <button
+      class="button is-primary mr-3"
+      (click)="seeMoreAlbums()"
+      [disabled]="artistsAlbums.length < albumsLimit - 1"
+    >
+      See More
+    </button>
+    <button
+      class="button is-primary is-outlined"
+      (click)="resetAlbums()"
+      *ngIf="artistsAlbums.length < albumsLimit - 1 && seeMoreAlbumsCounter > 0"
+    >
+      Reset
+    </button>
   </div>
 </div>
 

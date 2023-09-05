@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/shared/api.service';
 import { faMagnifyingGlass, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -12,8 +13,6 @@ export class HeaderComponent {
   faSearch = faSearch;
   addToggle: boolean = false;
   title: string = 'for-the-record';
-  clientId: string = '98a85a2d677c4f67bd41a54b92bb98a5';
-  clientSecret: string = '091159f6fec54d8db2fc858f49991140';
   accessToken: string;
   selectedCategorySearch: FormGroup;
   searchResults: any;
@@ -21,53 +20,48 @@ export class HeaderComponent {
   category: string = 'album';
   redirectPath: string;
 
-  httpOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: `grant_type=client_credentials&client_id=${this.clientId}&client_secret=${this.clientSecret}`
-  }
-
-  constructor(private router: Router) { }
+  constructor(private apiService: ApiService, private router: Router) { }
 
   ngOnInit() {
     this.tokenCreate();
     this.initForm();
   }
 
-  tokenCreate() {
-    fetch('https://accounts.spotify.com/api/token', this.httpOptions)
-      .then(result => result.json())
-      .then(data => this.getToken(data.access_token));
+  async tokenCreate() {
+    try {
+      const results = await this.apiService.tokenCreate();
+      console.log(results);
+
+      if (results !== undefined && results !== null) {
+        this.accessToken = results;
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  getToken(data: string) {
-    this.accessToken = 'Bearer ' + data;
-    return this.accessToken;
-  }
-
-  searchAlbums() {
+  async searchAlbums() {
     this.tokenCreate();
-    fetch('https://api.spotify.com/v1/search?q=' + this.selectedCategorySearch.value.selectedCategory + '&type=' + this.category, {
+    let response = await fetch('https://api.spotify.com/v1/search?q=' + this.selectedCategorySearch.value.selectedCategory + '&type=' + this.category + '&offset=0', {
       method: 'GET',
       headers: {
         'Authorization': this.accessToken
       }
-    })
-      .then(result => result.json())
-      .then(data => {
-        if (this.category === 'album') {
-          this.redirectPath = 'records';
-          return this.searchResults = data.albums.items;
-        } else if (this.category === 'artist') {
-          console.log(data.artists);
-          this.redirectPath = 'artists';
-          return this.searchResults = data.artists.items;
-        }
-        // console.log(data);
-        // return this.searchResults = data.albums.items;
-      });
+    });
+    let json = await response.json();
+    console.log(json);
+    if (this.category === 'album') {
+      this.redirectPath = 'records';
+      if (json.albums.items) {
+        return this.searchResults = json.albums.items;
+      }
+    } else if (this.category === 'artist') {
+      console.log(json.artists);
+      this.redirectPath = 'artists';
+      if (json.artists.items) {
+        return this.searchResults = json.artists.items;
+      }
+    }
   }
 
   onSubmit() {

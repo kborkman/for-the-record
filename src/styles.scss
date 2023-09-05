@@ -234,3 +234,22 @@ p {
       }
     }
   }
+
+  .home-hero {
+    background-image: url(assets/concert-hero.png);
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 655px;
+
+    .title {
+      color: $secondary;
+      font-family: $family-primary;
+      font-size: 2.25rem;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      color: #fff;
+    }
+  }

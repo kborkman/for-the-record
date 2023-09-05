@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecordsService } from 'src/app/shared/records.service';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { ApiService } from 'src/app/shared/api.service';
 
 @Component({
   selector: 'app-artist-detail',
@@ -30,24 +31,76 @@ export class ArtistDetailComponent {
     body: `grant_type=client_credentials&client_id=${this.clientId}&client_secret=${this.clientSecret}`
   }
 
-  constructor(private recordsService: RecordsService, private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private apiService: ApiService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
     this.getId();
     this.tokenCreate();
-
   }
 
-  tokenCreate() {
-    fetch('https://accounts.spotify.com/api/token', this.httpOptions)
-      .then(result => result.json())
-      .then(data => this.getToken(data.access_token));
+  getId() {
+    this.id = this.route.snapshot.paramMap.get('id');
   }
 
-  getToken(data: string) {
-    this.accessToken = 'Bearer ' + data;
-    this.getArtist(this.id, this.accessToken);
-    this.getArtistAlbums(this.id, this.accessToken);
+  async tokenCreate() {
+    try {
+      const results = await this.apiService.tokenCreate();
+      console.log(results);
+
+      if (results !== undefined && results !== null) {
+        this.accessToken = results;
+        this.findArtist();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // async getRecord() {
+  //   try {
+  //     const results = await this.apiService.getRecordSpotify(this.id);
+  //     console.log(results);
+
+  //     if (results !== undefined && results !== null) {
+  //       this.artistId = results.artists[0].id;
+  //       this.albumDetails = results;
+  //       this.addTrackTime();
+  //       this.findArtist();
+  //       this.findArtistAlbums(this.albumsOffset, this.albumsLimit);
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }
+
+  async findArtist() {
+    try {
+      const results = await this.apiService.getArtist(this.id, this.accessToken);
+      console.log(results);
+
+      if (results !== undefined && results !== null) {
+        console.log('we have an artist');
+        this.artist = results;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async findArtistAlbums(offset, limit) {
+    try {
+      const results = await this.apiService.getArtistAlbums(this.id, this.accessToken, offset, limit);
+      console.log(results);
+
+      if (results !== undefined && results !== null) {
+        this.artistsAlbums = results;
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   // getRecordSpotify(id: string, token: string) {
@@ -67,39 +120,35 @@ export class ArtistDetailComponent {
   //     });
   // }
 
-  getArtistAlbums(id: string, token: string) {
-    fetch('https://api.spotify.com/v1/artists/' + id + '/albums?include_groups=album&offset=' + this.albumsOffset + '&limit=' + this.albumsLimit + '&locale=en-US,en;q=0.9', {
-      method: 'GET',
-      headers: {
-        'Authorization': token
-      }
-    })
-      .then(result => result.json())
-      .then(data => {
-        this.artistsAlbums = data.items;
-        console.log(this.artistsAlbums);
-        // this.addTrackTime();
-        return this.artistsAlbums;
-      });
-  }
+  // getArtistAlbums(id: string, token: string) {
+  //   fetch('https://api.spotify.com/v1/artists/' + id + '/albums?include_groups=album&offset=' + this.albumsOffset + '&limit=' + this.albumsLimit + '&locale=en-US,en;q=0.9', {
+  //     method: 'GET',
+  //     headers: {
+  //       'Authorization': token
+  //     }
+  //   })
+  //     .then(result => result.json())
+  //     .then(data => {
+  //       this.artistsAlbums = data.items;
+  //       console.log(this.artistsAlbums);
+  //       // this.addTrackTime();
+  //       return this.artistsAlbums;
+  //     });
+  // }
 
-  getArtist(id: string, token: string) {
-    fetch('https://api.spotify.com/v1/artists/' + id, {
-      method: 'GET',
-      headers: {
-        'Authorization': token
-      }
-    })
-      .then(result => result.json())
-      .then(data => {
-        console.log(data);
-        return this.artist = data;
-      });
-  }
-
-  getId() {
-    this.id = this.route.snapshot.paramMap.get('id');
-  }
+  // getArtist(id: string, token: string) {
+  //   fetch('https://api.spotify.com/v1/artists/' + id, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Authorization': token
+  //     }
+  //   })
+  //     .then(result => result.json())
+  //     .then(data => {
+  //       console.log(data);
+  //       return this.artist = data;
+  //     });
+  // }
 
   redirectTo(uri: string, id: string) {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
@@ -113,17 +162,12 @@ export class ArtistDetailComponent {
   seeMoreAlbums() {
     this.albumsOffset += this.albumsLimit;
     this.seeMoreAlbumsCounter++;
-    this.getArtistAlbums(this.id, this.accessToken);
+    this.findArtistAlbums(this.albumsOffset, this.albumsLimit);
   }
 
   resetAlbums() {
     this.albumsOffset = 0;
-    this.getArtistAlbums(this.id, this.accessToken);
+    this.findArtistAlbums(this.albumsOffset, this.albumsLimit);
     this.seeMoreAlbumsCounter = 0;
   }
-
-  // getArtist(id) {
-  //   this.record = this.recordsService.getRecord(id);
-  //   console.log(this.record);
-  // }
 }

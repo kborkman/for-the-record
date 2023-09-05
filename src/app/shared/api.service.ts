@@ -36,77 +36,69 @@ export class ApiService {
     console.log(this.id);
   }
 
-  tokenCreate(id: string) {
-    fetch('https://accounts.spotify.com/api/token', this.httpOptions)
-      .then(result => result.json())
-      .then(data => this.getToken(data.access_token, id));
+  // tokenCreate(id: string) {
+  //   fetch('https://accounts.spotify.com/api/token', this.httpOptions)
+  //     .then(result => result.json())
+  //     .then(data => this.getToken(data.access_token, id));
+  // }
+
+  async tokenCreate() {
+    let response = await fetch('https://accounts.spotify.com/api/token', this.httpOptions);
+    let json = await response.json();
+    this.accessToken = 'Bearer ' + json.access_token;
+    return this.accessToken;
   }
 
-  getToken(data: string, id: string) {
-    this.accessToken = 'Bearer ' + data;
-    this.getRecordSpotify(id);
-  }
+  // getToken(data: string, id: string) {
+  //   this.accessToken = 'Bearer ' + data;
+  //   console.log(this.accessToken);
+  //   this.getRecordSpotify(id);
+  // }
 
-  getRecordSpotify(id: string) {
-    fetch('https://api.spotify.com/v1/albums/' + id, {
+  async getRecordSpotify(id: string) {
+    let response = await fetch('https://api.spotify.com/v1/albums/' + id, {
       method: 'GET',
       headers: {
         'Authorization': this.accessToken
       }
-    })
-      .then(result => result.json())
-      .then(data => {
-        this.artistId = data.artists[0].id;
-        console.log(this.artistId);
-        this.getArtistAlbums(this.artistId, this.accessToken);
-        this.getArtist(this.artistId, this.accessToken);
-        // this.isImgLoaded = true;
-        return this.albumDetails = data;
-      });
+    });
+    let json = await response.json();
+    // this.artistId = json.artists[0].id;
+    // console.log(this.artistId);
+    // this.getArtistAlbums(this.artistId, this.accessToken);
+    // this.getArtist(this.artistId, this.accessToken);
+    // this.isImgLoaded = true;
+    return this.albumDetails = json;
   }
 
-  getArtistAlbums(id: string, token: string) {
-    fetch('https://api.spotify.com/v1/artists/' + id + '/albums?include_groups=album&offset=' + this.albumsOffset + '&limit=' + this.albumsLimit + '&locale=en-US,en;q=0.9', {
+
+  async getArtistAlbums(id: string, token: string, offset: number, limit: number) {
+    console.log(`id = ${id} and token = ${token}`);
+    let response = await fetch('https://api.spotify.com/v1/artists/' + id + '/albums?include_groups=album&offset=' + offset + '&limit=' + limit + '&locale=en-US,en;q=0.9', {
       method: 'GET',
       headers: {
         'Authorization': token
       }
-    })
-      .then(result => result.json())
-      .then(data => {
-        this.artistsAlbums = data.items;
-        console.log(this.artistsAlbums);
-        if (this.albumDetails.tracks.items.trackTotal) {
-          this.addTrackTime();
-        }
-        return this.artistsAlbums;
-      });
+    });
+    let json = await response.json();
+    this.artistsAlbums = json.items;
+    console.log(this.artistsAlbums);
+    // let tracks = this.albumDetails.tracks.items.trackTotal;
+    // if (tracks !== undefined) {
+    //   this.addTrackTime();
+    // }
+    return this.artistsAlbums;
   }
 
-  getArtist(id: string, token: string) {
-    fetch('https://api.spotify.com/v1/artists/' + id, {
+  async getArtist(id: string, token: string) {
+    let response = await fetch('https://api.spotify.com/v1/artists/' + id, {
       method: 'GET',
       headers: {
         'Authorization': token
       }
-    })
-      .then(result => result.json())
-      .then(data => {
-        console.log(data);
-        return this.artist = data;
-      });
-  }
-
-  addTrackTime() {
-    this.trackTotal = this.albumDetails.tracks.items.reduce((acc: number, track: any) => acc + track.duration_ms, 0);
-    this.hours = Math.floor(this.trackTotal / (1000 * 60 * 60));
-    this.minutes = Math.floor((this.trackTotal % (1000 * 60 * 60)) / (1000 * 60));
-    if (this.minutes < 10) {
-      this.minutes = this.minutes.toString().padStart(2, '0');
-    }
-    this.seconds = Math.floor((this.trackTotal % (1000 * 60)) / 1000);
-    if (this.seconds < 10) {
-      this.seconds = this.seconds.toString().padStart(2, '0');
-    }
+    });
+    let json = await response.json();
+    console.log(json);
+    return this.artist = json;
   }
 }
