@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
-import { Record } from 'src/app/shared/record.model';
-import { RecordsService } from '../../shared/records.service';
+import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { ApiService } from 'src/app/shared/api.service';
+import { Observable, map } from 'rxjs';
 
 
 @Component({
@@ -14,110 +15,106 @@ export class RecordDetailComponent {
   record: any;
   id: string;
   accessToken: string;
-  clientId: string = '98a85a2d677c4f67bd41a54b92bb98a5';
-  clientSecret: string = '091159f6fec54d8db2fc858f49991140';
   faCheck = faCheck;
   artistId: string;
   artistsAlbums: any;
   artist: any;
   trackTotal: number = 0;
   hours: number;
-  minutes: number;
-  seconds: number;
+  minutes: any;
+  seconds: any;
   albumsLimit: number = 16;
   albumsOffset: number = 0;
   seeMoreAlbumsCounter: number = 0;
-  httpOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: `grant_type=client_credentials&client_id=${this.clientId}&client_secret=${this.clientSecret}`
-  }
+  isImgLoaded: boolean = false;
   albumDetails: any;
   noMoreAlbums: boolean = false;
+  apiAlbums: any;
 
-  constructor(private recordsService: RecordsService, private route: ActivatedRoute, private router: Router) { }
+  constructor(
+    private apiService: ApiService,
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
     this.getRecordId();
     this.tokenCreate();
-    // this.getRecordSpotify(this.id);
-    // this.getArtistAlbums(this.artistId, this.accessToken);
   }
 
   getRecordId() {
     this.id = this.route.snapshot.paramMap.get('id');
   }
 
-  // getRecord(id: string) {
-  //   this.record = this.recordsService.getRecord(id);
-  // }
+  async tokenCreate() {
+    try {
+      const results = await this.apiService.tokenCreate();
+      console.log(results);
 
-  tokenCreate() {
-    fetch('https://accounts.spotify.com/api/token', this.httpOptions)
-      .then(result => result.json())
-      .then(data => this.getToken(data.access_token));
-  }
-
-  getToken(data: string) {
-    this.accessToken = 'Bearer ' + data;
-    this.getRecordSpotify(this.id, this.accessToken);
-  }
-
-  getRecordSpotify(id: string, token: string) {
-    fetch('https://api.spotify.com/v1/albums/' + id, {
-      method: 'GET',
-      headers: {
-        'Authorization': this.accessToken
+      if (results !== undefined && results !== null) {
+        this.accessToken = results;
+        this.getRecord();
       }
-    })
-      .then(result => result.json())
-      .then(data => {
-        this.artistId = data.artists[0].id;
-        this.getArtistAlbums(this.artistId, this.accessToken);
-        this.getArtist(this.artistId, this.accessToken);
-        return this.albumDetails = data;
-      });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  getArtistAlbums(id: string, token: string) {
-    fetch('https://api.spotify.com/v1/artists/' + id + '/albums?include_groups=album&offset=' + this.albumsOffset + '&limit=' + this.albumsLimit + '&locale=en-US,en;q=0.9', {
-      method: 'GET',
-      headers: {
-        'Authorization': token
-      }
-    })
-      .then(result => result.json())
-      .then(data => {
-        this.artistsAlbums = data.items.filter((album) => {
-          return album.name != this.albumDetails.name;
-        });
-        console.log(this.artistsAlbums);
+  async getRecord() {
+    try {
+      const results = await this.apiService.getRecordSpotify(this.id);
+      console.log(results);
+
+      if (results !== undefined && results !== null) {
+        this.artistId = results.artists[0].id;
+        this.albumDetails = results;
         this.addTrackTime();
-        return this.artistsAlbums;
-      });
+        this.findArtist();
+        this.findArtistAlbums(this.albumsOffset, this.albumsLimit);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  getArtist(id: string, token: string) {
-    fetch('https://api.spotify.com/v1/artists/' + id, {
-      method: 'GET',
-      headers: {
-        'Authorization': token
+  async findArtist() {
+    try {
+      const results = await this.apiService.getArtist(this.artistId, this.accessToken);
+      console.log(results);
+
+      if (results !== undefined && results !== null) {
+        console.log('we have an artist');
+        this.artist = results;
       }
-    })
-      .then(result => result.json())
-      .then(data => {
-        console.log(data);
-        return this.artist = data;
-      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async findArtistAlbums(offset, limit) {
+    try {
+      const results = await this.apiService.getArtistAlbums(this.artistId, this.accessToken, offset, limit);
+      console.log(results);
+
+      if (results !== undefined && results !== null) {
+        this.artistsAlbums = results;
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   addTrackTime() {
-    this.trackTotal = this.albumDetails.tracks.items.reduce((acc, track) => acc + track.duration_ms, 0);
+    this.trackTotal = this.albumDetails.tracks.items.reduce((acc: number, track: any) => acc + track.duration_ms, 0);
     this.hours = Math.floor(this.trackTotal / (1000 * 60 * 60));
     this.minutes = Math.floor((this.trackTotal % (1000 * 60 * 60)) / (1000 * 60));
+    if (this.minutes < 10) {
+      this.minutes = this.minutes.toString().padStart(2, '0');
+    }
     this.seconds = Math.floor((this.trackTotal % (1000 * 60)) / 1000);
+    if (this.seconds < 10) {
+      this.seconds = this.seconds.toString().padStart(2, '0');
+    }
   }
 
   redirectTo(uri: string, id: string) {
@@ -132,12 +129,12 @@ export class RecordDetailComponent {
   seeMoreAlbums() {
     this.albumsOffset += this.albumsLimit;
     this.seeMoreAlbumsCounter++;
-    this.getArtistAlbums(this.artistId, this.accessToken);
+    this.findArtistAlbums(this.albumsOffset, this.albumsLimit);
   }
 
   resetAlbums() {
     this.albumsOffset = 0;
-    this.getArtistAlbums(this.artistId, this.accessToken);
+    this.findArtistAlbums(this.albumsOffset, this.albumsLimit);
     this.seeMoreAlbumsCounter = 0;
   }
 }

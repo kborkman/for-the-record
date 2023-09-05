@@ -14,6 +14,7 @@ import { FooterComponent } from './footer/footer.component';
 import { AddToCollectionComponent } from './add-to-collection/add-to-collection.component';
 import { ArtistsComponent } from './artists/artists.component';
 import { ArtistDetailComponent } from './artists/artist-detail/artist-detail.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { ArtistDetailComponent } from './artists/artist-detail/artist-detail.com
     FooterComponent,
     AddToCollectionComponent,
     ArtistsComponent,
-    ArtistDetailComponent
+    ArtistDetailComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

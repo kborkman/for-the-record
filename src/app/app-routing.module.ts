@@ -5,9 +5,10 @@ import { RecordsComponent } from './records/records.component';
 import { RecordDetailComponent } from './records/record-detail/record-detail.component';
 import { ArtistsComponent } from './artists/artists.component';
 import { ArtistDetailComponent } from './artists/artist-detail/artist-detail.component';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: '', component: RecordsComponent },
+  { path: '', component: HomeComponent },
   { path: 'records', component: RecordsComponent, children: [] },
   { path: 'records/:id', component: RecordDetailComponent },
   { path: 'artists', component: ArtistsComponent, children: [] },
