@@ -9,32 +9,9 @@ export class ApiService {
   accessToken: string;
   clientId: string = '98a85a2d677c4f67bd41a54b92bb98a5';
   clientSecret: string = '091159f6fec54d8db2fc858f49991140';
-  artistId: string;
-  artistsAlbums: any;
-  artist: any;
-  trackTotal: number = 0;
-  hours: number;
-  minutes: any;
-  seconds: any;
-  albumsLimit: number = 16;
-  albumsOffset: number = 0;
-  seeMoreAlbumsCounter: number = 0;
-  isImgLoaded: boolean = false;
-  httpOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    body: `grant_type=client_credentials&client_id=${this.clientId}&client_secret=${this.clientSecret}`
-  }
   albumDetails: any;
 
   constructor(public route: ActivatedRoute) { }
-
-  getRecordId() {
-    this.id = this.route.snapshot.paramMap.get('id');
-    console.log(this.id);
-  }
 
   // tokenCreate(id: string) {
   //   fetch('https://accounts.spotify.com/api/token', this.httpOptions)
@@ -43,17 +20,17 @@ export class ApiService {
   // }
 
   async tokenCreate() {
-    let response = await fetch('https://accounts.spotify.com/api/token', this.httpOptions);
+    let response = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: `grant_type=client_credentials&client_id=${this.clientId}&client_secret=${this.clientSecret}`
+    });
     let json = await response.json();
     this.accessToken = 'Bearer ' + json.access_token;
     return this.accessToken;
   }
-
-  // getToken(data: string, id: string) {
-  //   this.accessToken = 'Bearer ' + data;
-  //   console.log(this.accessToken);
-  //   this.getRecordSpotify(id);
-  // }
 
   async getRecordSpotify(id: string) {
     let response = await fetch('https://api.spotify.com/v1/albums/' + id, {
@@ -63,11 +40,6 @@ export class ApiService {
       }
     });
     return await response.json();
-    // this.artistId = json.artists[0].id;
-    // console.log(this.artistId);
-    // this.getArtistAlbums(this.artistId, this.accessToken);
-    // this.getArtist(this.artistId, this.accessToken);
-    // this.isImgLoaded = true;
   }
 
 
