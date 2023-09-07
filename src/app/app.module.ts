@@ -15,6 +15,7 @@ import { AddToCollectionComponent } from './add-to-collection/add-to-collection.
 import { ArtistsComponent } from './artists/artists.component';
 import { ArtistDetailComponent } from './artists/artist-detail/artist-detail.component';
 import { HomeComponent } from './home/home.component';
+import { ImageGridComponent } from './shared/image-grid/image-grid.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { HomeComponent } from './home/home.component';
     AddToCollectionComponent,
     ArtistsComponent,
     ArtistDetailComponent,
-    HomeComponent
+    HomeComponent,
+    ImageGridComponent
   ],
   imports: [
     BrowserModule,

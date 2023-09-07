@@ -1,7 +1,7 @@
 <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item" [routerLink]="['']">
-      <img src="../../assets/hero_logo.png">
+      <img src="../../assets/hero_logo.png" />
     </a>
 
     <div class="navbar-right">
@@ -17,7 +17,13 @@
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <a
+        role="button"
+        class="navbar-burger"
+        aria-label="menu"
+        aria-expanded="false"
+        data-target="navbarBasicExample"
+      >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -27,33 +33,19 @@
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <a class="navbar-item">
-        Home
-      </a>
+      <a class="navbar-item"> Home </a>
 
-      <a class="navbar-item">
-        Documentation
-      </a>
+      <a class="navbar-item"> Documentation </a>
 
       <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          More
-        </a>
+        <a class="navbar-link"> More </a>
 
         <div class="navbar-dropdown">
-          <a class="navbar-item">
-            About
-          </a>
-          <a class="navbar-item">
-            Jobs
-          </a>
-          <a class="navbar-item">
-            Contact
-          </a>
-          <hr class="navbar-divider">
-          <a class="navbar-item">
-            Report an issue
-          </a>
+          <a class="navbar-item"> About </a>
+          <a class="navbar-item"> Jobs </a>
+          <a class="navbar-item"> Contact </a>
+          <hr class="navbar-divider" />
+          <a class="navbar-item"> Report an issue </a>
         </div>
       </div>
     </div>
@@ -64,9 +56,7 @@
           <a class="button is-primary">
             <strong>Sign up</strong>
           </a>
-          <a class="button is-light">
-            Log in
-          </a>
+          <a class="button is-light"> Log in </a>
         </div>
       </div>
     </div>
@@ -76,54 +66,68 @@
 <div class="modal" [ngClass]="addToggle ? 'is-active' : ''">
   <div class="modal-background"></div>
   <div class="modal-content search-modal">
-   <div class="modal-card">
-    <header class="modal-card-head">
-      <section class="section search-wrap">
-        <form [formGroup]="selectedCategorySearch" (ngSubmit)="onSubmit()" class="columns is-mobile is-gapless search-paired">
-          <div class="field column is-four-fifths">
-            <div class="control has-icons-left">
-              <input
-                id="selectedCategory"
-                formControlName="selectedCategory"
-                class="input"
-                type="text"
-                placeholder="Search for Album, Artist, or Year">
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <section class="section search-wrap">
+          <form
+            [formGroup]="selectedCategorySearch"
+            (ngSubmit)="onSubmit()"
+            class="columns is-mobile is-gapless search-paired"
+          >
+            <div class="field column is-four-fifths">
+              <div class="control has-icons-left">
+                <input
+                  id="selectedCategory"
+                  formControlName="selectedCategory"
+                  class="input"
+                  type="text"
+                  placeholder="Search for Album or Artist"
+                />
                 <span class="icon is-small is-left">
                   <fa-icon [icon]="faMagnifying"></fa-icon>
                 </span>
+              </div>
             </div>
-          </div>
-          <div class="column is-one-fifth">
-            <button class="button is-primary" type="submit"  [disabled]="!selectedCategorySearch.valid">Search</button>
-          </div>
-        </form>
-        <div class="search-options-wrap">
-          <button class="button is-dark is-active" (click)="onCategorySelect($event)">Album</button>
-          <button class="button is-dark second" (click)="onCategorySelect($event)">Artist</button>
-          <button class="button is-dark" (click)="onCategorySelect($event)">Year</button>
-        </div>
-    </section>
-    </header>
-
-    <section class="modal-card-body">
-      <div *ngIf="searchResults" class="section">
-        <div class="columns is-mobile is-multiline is-gapless results-grid">
-          <div *ngFor="let results of searchResults; let i = index" class="column is-one-third">
-            <img
-              (click)="navigateToAlbum(searchResults[i].id)"
-              class="is-square"
-              src="{{ searchResults[i].images[0].url }}"
-              alt="{{ searchResults[i].name }}"
+            <div class="column is-one-fifth">
+              <button
+                class="button is-primary"
+                type="submit"
+                [disabled]="!selectedCategorySearch.valid"
+              >
+                Search
+              </button>
+            </div>
+          </form>
+          <!-- <div class="search-options-wrap">
+            <button
+              class="button is-dark is-active"
+              (click)="onCategorySelect($event)"
             >
-          </div>
+              Album
+            </button>
+            <button
+              class="button is-dark second"
+              (click)="onCategorySelect($event)"
+            >
+              Artist
+            </button>
+            <button class="button is-dark" (click)="onCategorySelect($event)">
+              Year
+            </button>
+          </div> -->
+        </section>
+      </header>
+
+      <section class="modal-card-body">
+        <div *ngIf="searchResults" class="section">
+          <app-image-grid
+            [currentAlbums]="searchResults"
+            [searchValue]="selectedCategorySearch.value.selectedCategory"
+            [topic]="topic"
+          ></app-image-grid>
         </div>
-      </div>
-    </section>
-    <!-- <footer class="modal-card-foot">
-      <button class="button is-success">Save changes</button>
-      <button class="button" (click)="modalToggle()">Cancel</button>
-    </footer>
-  </div> -->
+      </section>
+    </div>
+    <button class="modal-close is-large" aria-label="close"></button>
   </div>
-  <button class="modal-close is-large" aria-label="close"></button>
 </div>
