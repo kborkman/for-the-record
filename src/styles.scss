@@ -253,3 +253,11 @@ p {
       color: #fff;
     }
   }
+
+  .see-more {
+    display: block;
+
+    &.hidden {
+      display: none;
+    }
+  }

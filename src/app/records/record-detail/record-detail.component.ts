@@ -1,9 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
+
 import { ApiService } from 'src/app/shared/api.service';
-import { Observable, map } from 'rxjs';
 
 
 @Component({
@@ -33,9 +32,7 @@ export class RecordDetailComponent {
 
   constructor(
     private apiService: ApiService,
-    private http: HttpClient,
-    private route: ActivatedRoute,
-    private router: Router) { }
+    private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.getRecordId();
@@ -49,22 +46,16 @@ export class RecordDetailComponent {
   async tokenCreate() {
     try {
       const results = await this.apiService.tokenCreate();
-      console.log(results);
-
       if (results !== undefined && results !== null) {
         this.accessToken = results;
         this.getRecord();
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch { (err => console.log(err)) };
   }
 
   async getRecord() {
     try {
       const results = await this.apiService.getRecordSpotify(this.id);
-      console.log(results);
-
       if (results !== undefined && results !== null) {
         this.artistId = results.artists[0].id;
         this.albumDetails = results;
@@ -72,36 +63,27 @@ export class RecordDetailComponent {
         this.findArtist();
         this.findArtistAlbums(this.albumsOffset, this.albumsLimit);
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch { (err => console.log(err)) };
   }
 
   async findArtist() {
     try {
       const results = await this.apiService.getArtist(this.artistId, this.accessToken);
-      console.log(results);
-
       if (results !== undefined && results !== null) {
-        console.log('we have an artist');
         this.artist = results;
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch { (err => console.log(err)) };
   }
 
   async findArtistAlbums(offset, limit) {
     try {
       const results = await this.apiService.getArtistAlbums(this.artistId, this.accessToken, offset, limit);
-      console.log(results);
-
       if (results !== undefined && results !== null) {
-        this.artistsAlbums = results;
+        this.artistsAlbums = results.items.filter((album) => {
+          return album.name != this.albumDetails.name;
+        });
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch { (err => console.log(err)) };
   }
 
   addTrackTime() {
@@ -115,27 +97,6 @@ export class RecordDetailComponent {
     if (this.seconds < 10) {
       this.seconds = this.seconds.toString().padStart(2, '0');
     }
-  }
-
-  redirectTo(uri: string, id: string) {
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-      this.router.navigate([uri, id]));
-  }
-
-  navigateToAlbum(id: string) {
-    this.redirectTo('/records', id);
-  }
-
-  seeMoreAlbums() {
-    this.albumsOffset += this.albumsLimit;
-    this.seeMoreAlbumsCounter++;
-    this.findArtistAlbums(this.albumsOffset, this.albumsLimit);
-  }
-
-  resetAlbums() {
-    this.albumsOffset = 0;
-    this.findArtistAlbums(this.albumsOffset, this.albumsLimit);
-    this.seeMoreAlbumsCounter = 0;
   }
 }
 

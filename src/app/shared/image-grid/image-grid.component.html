@@ -1,0 +1,25 @@
+<div class="columns is-mobile is-multiline is-gapless results-grid">
+  <div *ngFor="let album of currentAlbums" class="column is-one-quarter">
+    <img
+      (click)="navigateToAlbum(album.id)"
+      src="{{ album.images[0].url }}"
+      alt="{{ album.name }}"
+    />
+  </div>
+</div>
+<div class="see-more">
+  <button
+    class="button is-primary mr-3"
+    (click)="seeMoreAlbums()"
+    [disabled]="currentAlbums.length < albumsLimit - 1"
+  >
+    See More
+  </button>
+  <button
+    class="button is-primary is-outlined"
+    (click)="resetAlbums()"
+    *ngIf="currentAlbums.length < albumsLimit - 1 && seeMoreAlbumsCounter > 0"
+  >
+    Reset
+  </button>
+</div>

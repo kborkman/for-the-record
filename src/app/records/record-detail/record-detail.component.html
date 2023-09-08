@@ -1,11 +1,6 @@
 <section class="hero is-small">
   <div class="hero-image">
-    <img
-      *ngIf="isImgLoaded"
-      class="is-2by1"
-      src="{{ artist.images[0].url }}"
-      alt="artist.name"
-    />
+    <img class="is-2by1" src="{{ artist.images[0].url }}" alt="artist.name" />
     <!-- <img *ngIf="!isImgLoaded" src="../../../assets/bruce-hero.jpg" >
     <img
       [hidden]="!isImgLoaded"
@@ -92,62 +87,17 @@
     </div>
   </div>
 </section>
+
 <div class="section">
   <div class="container">
     <h2 class="title is-uppercase has-text-white is-4">
       More Albums by <br />{{ albumDetails.artists[0].name }}
     </h2>
-    <div class="columns is-mobile is-multiline is-gapless results-grid">
-      <div *ngFor="let album of artistsAlbums" class="column is-one-quarter">
-        <img
-          (click)="navigateToAlbum(album.id)"
-          src="{{ album.images[0].url }}"
-          alt="{{ album.name }}"
-        />
-      </div>
-    </div>
-    <button
-      class="button is-primary mr-3"
-      (click)="seeMoreAlbums()"
-      [disabled]="artistsAlbums.length < albumsLimit - 1"
-    >
-      See More
-    </button>
-    <button
-      class="button is-primary is-outlined"
-      (click)="resetAlbums()"
-      *ngIf="artistsAlbums.length < albumsLimit - 1 && seeMoreAlbumsCounter > 0"
-    >
-      Reset
-    </button>
+
+    <app-image-grid
+      [artistId]="albumDetails.artists[0].id"
+      [details]="albumDetails"
+      [currentAlbums]="artistsAlbums"
+    ></app-image-grid>
   </div>
 </div>
-
-<!-- <div class="block">
-  <nav class="level is-mobile">
-    <div class="level-item has-text-centered">
-      <div>
-        <p class="heading">Release Year</p>
-        <p class="title">{{ record.year }}</p>
-      </div>
-    </div>
-    <div class="level-item has-text-centered">
-      <div>
-        <p class="heading">Tracks</p>
-        <p class="title">10</p>
-      </div>
-    </div>
-    <div class="level-item has-text-centered">
-      <div>
-        <p class="heading">Followers</p>
-        <p class="title">456K</p>
-      </div>
-    </div>
-    <div class="level-item has-text-centered">
-      <div>
-        <p class="heading">Likes</p>
-        <p class="title">789</p>
-      </div>
-    </div>
-  </nav>
-</div> -->
