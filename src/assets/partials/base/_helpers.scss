@@ -1,0 +1,12 @@
+//helpers
+.is-secondary {
+  background: $secondary;
+}
+
+.bg-color-full {
+  padding: 1.5rem 2.5rem;
+
+  .container {
+    margin: 0;
+  }
+}

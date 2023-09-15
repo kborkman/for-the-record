@@ -1,0 +1,25 @@
+p {
+  font-family: $family-secondary;
+}
+
+.title {
+  font-weight: 400;
+}
+
+.content {
+  .title {
+    font-weight: 400;
+  }
+
+  h2 {
+    color: #fff;
+  }
+
+  h3 {
+    color: $primary;
+  }
+
+  p, ol, ul, li {
+    font-family: $family-secondary;
+  }
+}

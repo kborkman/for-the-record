@@ -1,0 +1,15 @@
+.card {
+  @include tablet {
+    max-width: 240px;
+  }
+}
+
+.card-content {
+  min-height: 150px;
+}
+
+.card-image {
+  @include tablet {
+    width: 240px;
+  }
+}

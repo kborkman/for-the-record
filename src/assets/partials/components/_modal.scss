@@ -1,0 +1,35 @@
+.modal-content.search-modal {
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  max-height: 100%;
+  margin: 0;
+
+  .modal-card {
+    margin: 0;
+  }
+
+  .modal-card-head {
+    background-color: $secondary;
+    display: block;
+    padding: 20px 0;
+  }
+
+  .modal-card-body {
+    background-color: $dark;
+    height: 100vh;
+  }
+
+  .modal-close {
+    background-color: $dark;
+    top: 5px;
+    right: 5px;
+  }
+
+  .search-wrap {
+    padding: 1.5rem .5rem;
+  }
+}
