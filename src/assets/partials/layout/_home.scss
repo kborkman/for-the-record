@@ -15,6 +15,10 @@
   .subtitle {
     color: #fff;
   }
+
+  .triangle-right {
+    @include triangle-right($secondary);
+  }
 }
 
 .stacked-box-wrap {

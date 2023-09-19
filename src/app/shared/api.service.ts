@@ -36,6 +36,17 @@ export class ApiService {
     return json.albums.items;
   }
 
+  async getNewReleases(token: string, offset: number, limit: number) {
+    let response = await fetch('https://api.spotify.com/v1/browse/new-releases?offset=' + offset + '&limit=' + limit, {
+      method: 'GET',
+      headers: {
+        'Authorization': token
+      }
+    });
+    const json = await response.json();
+    return json.albums.items;
+  }
+
   async getRecordSpotify(id: string) {
     let response = await fetch('https://api.spotify.com/v1/albums/' + id, {
       method: 'GET',

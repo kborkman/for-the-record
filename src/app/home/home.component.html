@@ -6,6 +6,7 @@
     </p>
     <button class="button is-outlined is-white">GET STARTED</button>
   </div>
+  <div class="triangle-right"></div>
 </section>
 
 <section class="hero is-secondary">
@@ -56,5 +57,15 @@
     <div class="is-flex is-justify-content-center">
       <img src="../../assets/record-player.gif" alt="record-player" />
     </div>
+  </div>
+</section>
+
+<section class="hero has-background-light section">
+  <div class="container">
+    <h2 class="title">BROWSE RECENT ALBUMS</h2>
+    <app-image-grid
+      [currentAlbums]="newAlbums"
+      [topic]="'new'"
+    ></app-image-grid>
   </div>
 </section>
