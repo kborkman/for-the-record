@@ -1,0 +1,49 @@
+.home-hero {
+  background-image: url(../../concert-hero.png);
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 655px;
+
+  .title {
+    color: $secondary;
+    font-family: $family-primary;
+    font-size: 2.25rem;
+    text-transform: uppercase;
+  }
+
+  .subtitle {
+    color: #fff;
+  }
+
+  .triangle-right {
+    @include triangle-right($secondary);
+  }
+}
+
+.stacked-box-wrap {
+
+  .box {
+    display: flex;
+    align-content: center;
+    background: $cod-gray;
+    margin-bottom: .25rem;
+  }
+
+  .box-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .box-right {
+    .title {
+      color: $secondary;
+      font-size: 1.5rem;
+    }
+
+    .subtitle {
+      color: #989898;
+      font-family: $family-secondary;
+    }
+  }
+}

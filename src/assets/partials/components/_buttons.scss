@@ -1,0 +1,19 @@
+.button {
+  &.is-dark.is-active {
+    color: $dark;
+  }
+}
+
+.see-more {
+  display: block;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.add-to-collection {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+}

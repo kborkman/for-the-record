@@ -1,0 +1,15 @@
+.hero {
+  .title-wrap {
+    margin-bottom: 1.5rem;
+
+    .title {
+      color: $text;
+      margin-bottom: 0;
+    }
+  }
+}
+
+.hero-image {
+  max-height: 260px;
+  overflow: hidden;
+}

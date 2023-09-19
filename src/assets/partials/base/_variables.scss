@@ -1,0 +1,18 @@
+// Colors
+$primary: #52E0FF;
+$secondary: #FD6199;
+$dark: #2B2B2B;
+$cod-gray: #1E1E1E;
+
+// Fonts
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap');
+
+$family-primary: 'Lato', sans-serif;
+$family-secondary: 'Playfair Display', serif;
+
+//variables
+$text: $cod-gray;
+$body-background-color: $dark;
+$section-padding: 1.5rem;
+
+@import '/node_modules/bulma/bulma.sass';

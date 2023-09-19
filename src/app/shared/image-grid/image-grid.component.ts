@@ -53,6 +53,13 @@ export class ImageGridComponent {
     } catch { (err => console.log(err)) };
   }
 
+  async getNewReleases() {
+    try {
+      const results = await this.apiService.getNewReleases(this.accessToken, this.albumsOffset, this.albumsLimit);
+      this.currentAlbums = results;
+    } catch { (err => console.log(err)) };
+  }
+
   redirectTo(uri: string, id: string) {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() =>
       this.router.navigate([uri, id]));
@@ -70,6 +77,8 @@ export class ImageGridComponent {
     this.seeMoreAlbumsCounter++;
     if (this.topic === 'search') {
       this.onSearch(this.albumsOffset, this.albumsLimit);
+    } else if (this.topic === 'new') {
+      this.getNewReleases();
     } else {
       this.findArtistAlbums(this.albumsOffset, this.albumsLimit);
     }
@@ -79,6 +88,8 @@ export class ImageGridComponent {
     this.albumsOffset = 0;
     if (this.topic === 'search') {
       this.onSearch(this.albumsOffset, this.albumsLimit);
+    } else if (this.topic === 'new') {
+      this.getNewReleases();
     } else {
       this.findArtistAlbums(this.albumsOffset, this.albumsLimit);
     }

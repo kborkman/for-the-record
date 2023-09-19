@@ -1,0 +1,46 @@
+
+.details-wrap {
+  line-height: 1.2;
+
+  .added-to {
+    font-size: 14px;
+  }
+  .is-square {
+    height: 132px;
+    width: 132px;
+  }
+}
+
+.details-tag {
+  color: $secondary;
+  font-size: 14px;
+  padding-right: 10px;
+
+  .is-gray & {
+    color: #989898;
+  }
+
+  &::after {
+    content: '';
+    background: #434343;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    height: .3rem;
+    width: .3rem;
+    left: 5px;
+    vertical-align: middle;
+  }
+
+  &:last-child::after {
+    content: none;
+  }
+}
+
+.track-listing p {
+  display: flex;
+
+  span {
+    margin-right: 4px;
+  }
+}
